@@ -6,6 +6,7 @@ using DevExpress.Utils.Extensions;
 using DBConnection;
 using MDS00;
 using System.Drawing;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace M06
 {
@@ -87,7 +88,7 @@ namespace M06
                 if (txeGarment.Text.Trim() != "" && lblStatus.Text == "* Add Garment")
                 {
                     StringBuilder sbSQL = new StringBuilder();
-                    sbSQL.Append("SELECT TOP(1) GarmentParts FROM GarmentParts WHERE (GarmentParts = N'" + txeGarment.Text.Trim() + "') ");
+                    sbSQL.Append("SELECT TOP(1) GarmentParts FROM GarmentParts WHERE (GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "') ");
                     if (new DBQuery(sbSQL).getString() != "")
                     {
                         FUNC.msgWarning("Duplicate garment parts. !! Please Change.");
@@ -100,7 +101,7 @@ namespace M06
                     StringBuilder sbSQL = new StringBuilder();
                     sbSQL.Append("SELECT TOP(1) OIDGParts ");
                     sbSQL.Append("FROM GarmentParts ");
-                    sbSQL.Append("WHERE (GarmentParts = N'" + txeGarment.Text.Trim() + "') ");
+                    sbSQL.Append("WHERE (GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "') ");
                     string strCHK = new DBQuery(sbSQL).getString();
                     if (strCHK != "" && strCHK != txeID.Text.Trim())
                     {
@@ -149,12 +150,12 @@ namespace M06
                         sbSQL.Append("IF NOT EXISTS(SELECT OIDGParts FROM GarmentParts WHERE OIDGParts = N'" + txeID.Text.Trim() + "') ");
                         sbSQL.Append(" BEGIN ");
                         sbSQL.Append("  INSERT INTO GarmentParts(GarmentParts, CreatedBy, CreatedDate) ");
-                        sbSQL.Append("  VALUES(N'" + txeGarment.Text.Trim() + "', '" + strCREATE + "', GETDATE()) ");
+                        sbSQL.Append("  VALUES(N'" + txeGarment.Text.Trim().Replace("'", "''") + "', '" + strCREATE + "', GETDATE()) ");
                         sbSQL.Append(" END ");
                         sbSQL.Append("ELSE ");
                         sbSQL.Append(" BEGIN ");
                         sbSQL.Append("  UPDATE GarmentParts SET ");
-                        sbSQL.Append("      GarmentParts = N'" + txeGarment.Text.Trim() + "' ");
+                        sbSQL.Append("      GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "' ");
                         sbSQL.Append("  WHERE(OIDGParts = '" + txeID.Text.Trim() + "') ");
                         sbSQL.Append(" END ");
                         //MessageBox.Show(sbSQL.ToString());
@@ -182,6 +183,30 @@ namespace M06
             string pathFile = new ObjSet.Folder(@"C:\MDS\Export\").GetPath() + "GarmentPartsList_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx";
             gvGarment.ExportToXlsx(pathFile);
             System.Diagnostics.Process.Start(pathFile);
+        }
+
+        private void gvGarment_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            if (sender is GridView)
+            {
+                GridView gView = (GridView)sender;
+                if (!gView.IsValidRowHandle(e.RowHandle)) return;
+                int parent = gView.GetParentRowHandle(e.RowHandle);
+                if (gView.IsGroupRow(parent))
+                {
+                    for (int i = 0; i < gView.GetChildRowCount(parent); i++)
+                    {
+                        if (gView.GetChildRowHandle(parent, i) == e.RowHandle)
+                        {
+                            e.Appearance.BackColor = i % 2 == 0 ? Color.AliceBlue : Color.White;
+                        }
+                    }
+                }
+                else
+                {
+                    e.Appearance.BackColor = e.RowHandle % 2 == 0 ? Color.AliceBlue : Color.White;
+                }
+            }
         }
     }
 }
