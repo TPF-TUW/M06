@@ -147,17 +147,29 @@ namespace M06
                             strCREATE = txeCREATE.Text.Trim();
                         }
 
-                        sbSQL.Append("IF NOT EXISTS(SELECT OIDGParts FROM GarmentParts WHERE OIDGParts = N'" + txeID.Text.Trim() + "') ");
-                        sbSQL.Append(" BEGIN ");
-                        sbSQL.Append("  INSERT INTO GarmentParts(GarmentParts, CreatedBy, CreatedDate) ");
-                        sbSQL.Append("  VALUES(N'" + txeGarment.Text.Trim().Replace("'", "''") + "', '" + strCREATE + "', GETDATE()) ");
-                        sbSQL.Append(" END ");
-                        sbSQL.Append("ELSE ");
-                        sbSQL.Append(" BEGIN ");
-                        sbSQL.Append("  UPDATE GarmentParts SET ");
-                        sbSQL.Append("      GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "' ");
-                        sbSQL.Append("  WHERE(OIDGParts = '" + txeID.Text.Trim() + "') ");
-                        sbSQL.Append(" END ");
+                        if (lblStatus.Text == "* Add Garment")
+                        {
+                            sbSQL.Append("  INSERT INTO GarmentParts(GarmentParts, CreatedBy, CreatedDate) ");
+                            sbSQL.Append("  VALUES(N'" + txeGarment.Text.Trim().Replace("'", "''") + "', '" + strCREATE + "', GETDATE()) ");
+                        }
+                        else if (lblStatus.Text == "* Edit Garment")
+                        {
+                            sbSQL.Append("  UPDATE GarmentParts SET ");
+                            sbSQL.Append("      GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "' ");
+                            sbSQL.Append("  WHERE(OIDGParts = '" + txeID.Text.Trim() + "') ");
+                        }
+
+                        //sbSQL.Append("IF NOT EXISTS(SELECT OIDGParts FROM GarmentParts WHERE OIDGParts = N'" + txeID.Text.Trim() + "') ");
+                        //sbSQL.Append(" BEGIN ");
+                        //sbSQL.Append("  INSERT INTO GarmentParts(GarmentParts, CreatedBy, CreatedDate) ");
+                        //sbSQL.Append("  VALUES(N'" + txeGarment.Text.Trim().Replace("'", "''") + "', '" + strCREATE + "', GETDATE()) ");
+                        //sbSQL.Append(" END ");
+                        //sbSQL.Append("ELSE ");
+                        //sbSQL.Append(" BEGIN ");
+                        //sbSQL.Append("  UPDATE GarmentParts SET ");
+                        //sbSQL.Append("      GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "' ");
+                        //sbSQL.Append("  WHERE(OIDGParts = '" + txeID.Text.Trim() + "') ");
+                        //sbSQL.Append(" END ");
                         //MessageBox.Show(sbSQL.ToString());
                         if (sbSQL.Length > 0)
                         {
