@@ -377,6 +377,7 @@
             this.gvGarment.OptionsView.EnableAppearanceEvenRow = true;
             this.gvGarment.OptionsView.EnableAppearanceOddRow = true;
             this.gvGarment.OptionsView.ShowGroupPanel = false;
+            this.gvGarment.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gvGarment_RowClick);
             this.gvGarment.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gvGarment_RowCellClick);
             this.gvGarment.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gvGarment_RowStyle);
             // 
