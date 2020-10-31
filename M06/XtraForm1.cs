@@ -206,5 +206,15 @@ namespace M06
             txeCREATE.Text = gvGarment.GetFocusedRowCellValue("CreatedBy").ToString();
             txeDATE.Text = gvGarment.GetFocusedRowCellValue("CreatedDate").ToString();
         }
+
+        private void bbiPrintPreview_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            gcGarment.ShowPrintPreview();
+        }
+
+        private void bbiPrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            gcGarment.Print();
+        }
     }
 }
