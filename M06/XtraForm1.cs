@@ -197,6 +197,7 @@ namespace M06
 
         private void gvGarment_RowClick(object sender, RowClickEventArgs e)
         {
+            if (gvGarment.IsFilterRow(e.RowHandle)) return;
             lblStatus.Text = "* Edit Garment";
             lblStatus.ForeColor = Color.Red;
 
