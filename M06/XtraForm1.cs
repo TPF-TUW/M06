@@ -84,8 +84,6 @@ namespace M06
                     sbSQL.Append("SELECT TOP(1) GarmentParts FROM GarmentParts WHERE (GarmentParts = N'" + txeGarment.Text.Trim().Replace("'", "''") + "') ");
                     if (new DBQuery(sbSQL).getString() != "")
                     {
-                        FUNC.msgWarning("Duplicate garment parts. !! Please Change.");
-                        txeGarment.Text = "";
                         chkDup = false;
                     }
                 }
@@ -98,8 +96,6 @@ namespace M06
                     string strCHK = new DBQuery(sbSQL).getString();
                     if (strCHK != "" && strCHK != txeID.Text.Trim())
                     {
-                        FUNC.msgWarning("Duplicate garment parts. !! Please Change.");
-                        txeGarment.Text = "";
                         chkDup = false;
                     }
                 }
@@ -109,11 +105,15 @@ namespace M06
 
         private void txeGarment_Leave(object sender, EventArgs e)
         {
-            bool chkDup = chkDuplicate();
-            if (chkDup == false)
+            if (txeGarment.Text.Trim() != "")
             {
-                txeGarment.Text = "";
-                txeGarment.Focus();
+                bool chkDup = chkDuplicate();
+                if (chkDup == false)
+                {
+                    txeGarment.Text = "";
+                    txeGarment.Focus();
+                    FUNC.msgWarning("Duplicate garment parts. !! Please Change.");
+                }
             }
         }
 
@@ -215,6 +215,14 @@ namespace M06
         private void bbiPrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             gcGarment.Print();
+        }
+
+        private void txeGarment_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txeID.Focus();
+            }
         }
     }
 }

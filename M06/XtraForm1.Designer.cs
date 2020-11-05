@@ -346,6 +346,7 @@
             this.txeGarment.Size = new System.Drawing.Size(246, 20);
             this.txeGarment.StyleController = this.layoutControl1;
             this.txeGarment.TabIndex = 6;
+            this.txeGarment.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txeGarment_KeyDown);
             this.txeGarment.Leave += new System.EventHandler(this.txeGarment_Leave);
             // 
             // txeID
